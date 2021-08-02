@@ -199,7 +199,34 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </footer>
 <script src="./statics/js/jquery.min.js"></script>
 <script src="./statics/js/keyword.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded',function(){
+document.getElementById('button').addEventListener('click',function(){
+if(! ('Notification'inwindow) ){
+alert('Sorry bro, your browser is not good enough to display notification');
 
+return;
+
+}
+
+Notification.requestPermission(function(permission){
+varconfig = {
+body:'Thanks for clicking that button. Hope you liked.',
+
+icon:'https://cdn2.iconfinder.com/data/icons/ios-7-style-metro-ui-icons/512/MetroUI_HTML5.png',
+
+dir:'auto'
+
+};
+
+varnotification =newNotification("Here I am!",config);
+
+});
+
+});
+
+});
+  </script>
 
 </body>
 </html>
