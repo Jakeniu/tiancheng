@@ -346,22 +346,7 @@ textarea {
     font-weight: bold;
     color: #fff;
 }
-.jj-list-link2 {
-    display: block;
-    background: rgba(230, 247, 255, 0.96);
-    color:rgba(49, 70, 89, 1);
-    font-size: 13px;
-    text-align: center;
-    line-height: 44px;
-    transition: all 0.2s;
-    border-radius: 2px;
-}
-.jj-list-link2:hover {
-    background: #1890FF 100%;
-    font-size: 18px;
-    font-weight: bold;
-    color: #FE2E64;
-}
+
 
 /*-----------------------------简洁版样式定义- 结束---------------------------------------------------*/
 
