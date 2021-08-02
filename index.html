@@ -200,32 +200,68 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script src="./statics/js/jquery.min.js"></script>
 <script src="./statics/js/keyword.js"></script>
 <script>
-  document.addEventListener('DOMContentLoaded',function(){
-document.getElementById('button').addEventListener('click',function(){
-if(! ('Notification'inwindow) ){
-alert('Sorry bro, your browser is not good enough to display notification');
-
-return;
-
+function MessageNotice() {
+    this.defaultTitle = document.title;
+    this.message  = "【新消息】";
+    this.emptyMsg = "【　　　】";
+    //不少浏览器已经关闭了脚本化它们的状态栏的功能。
+    this.noticeTimer = null;
+    this.type = 0;
+    this.data = null;
 }
-
-Notification.requestPermission(function(permission){
-varconfig = {
-body:'Thanks for clicking that button. Hope you liked.',
-
-icon:'https://cdn2.iconfinder.com/data/icons/ios-7-style-metro-ui-icons/512/MetroUI_HTML5.png',
-
-dir:'auto'
-
+ 
+MessageNotice.prototype.startAnim = function (type, data) {
+    this.type = type;
+    this.data = data;
+ 
+    this.stopAnim();
+    var _message = this.message;
+    var _emptyMsg = this.emptyMsg;
+    var _defaultMsg = this.defaultTitle;
+    this.noticeTimer = setInterval(function () {
+        document.title = document.title == _message+_defaultMsg ? _emptyMsg+_defaultMsg : _message+_defaultMsg;
+    }, 100);
+ 
+    if (isNewQid && !isActiveBrowser && window.Notification || type == 1 && !isActiveBrowser && window.Notification) {
+        if (Notification.permission == "granted") {
+            this.pushNotice();
+        } else if (Notification.permission != "denied") {
+            Notification.requestPermission(function (permission) {
+                MessageNotice.prototype.pushNotice();
+            });
+        }
+    }
+};
+ 
+MessageNotice.prototype.pushNotice = function() {
+    var objType = this.type;
+    var objData = this.data;
+    if (Notification.permission == "granted") {
+        var notification = new Notification("", {
+            body : "您有新的消息",
+            icon : ""
+        });
+        notification.onclick = function () {
+            if (objType== 1) {
+                $("#userList>a>span[data-uid="+objData.toUserId+"]").parent().click();
+                $("#answerList>a[data-target-uid="+objData.toUserId+"][data-uid="+objData.targetUserId+"][data-qid="+objData.qid+"]").click();
+            } else if (objType == 2) {
+                $("#show-problem").click();
+            }
+            //跳回浏览器
+            window.focus();
+            notification.close();
+        }
+    } else {
+        console.log('浏览器不支持Notification');
+    }
+};
+ 
+MessageNotice.prototype.stopAnim = function () {
+    clearInterval(this.noticeTimer);
+    document.title = this.defaultTitle;
 };
 
-varnotification =newNotification("Here I am!",config);
-
-});
-
-});
-
-});
   </script>
 
 </body>
